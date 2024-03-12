@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search and Rescue</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        #searchForm {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-bottom: 15px;
+        }
+
+        button[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        #map {
+            margin-top: 20px;
+            height: 300px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <form id="searchForm">
+        <label for="latitude">Latitude:</label>
+        <input type="text" id="latitude" name="latitude" required><br><br>
+        <label for="longitude">Longitude:</label>
+        <input type="text" id="longitude" name="longitude" required><br><br>
+        <label for="radius">Search Radius (km):</label>
+        <input type="number" id="radius" name="radius" min="1" required><br><br>
+        <button type="submit">Calculate Search Area</button>
+    </form>
+    <div id="map"></div>
+
+    <script>
+        document.getElementById('searchForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            let latitude = document.getElementById('latitude').value;
+            let longitude = document.getElementById('longitude').value;
+            let radius = document.getElementById('radius').value;
+
+            fetch('/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: `latitude=${latitude}&longitude=${longitude}&radius=${radius}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Plot search area on map
+                plotSearchArea(data.search_area);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+
+        function plotSearchArea(searchArea) {
+            // Add code to plot the search area on a map (e.g., using Leaflet, Google Maps, etc.)
+            console.log(searchArea);
+        }
+    </script>
+</body>
+</html>
